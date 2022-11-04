@@ -30,23 +30,20 @@ except:
 
 def preview_base():
     return cursor.execute('SELECT * FROM personnel')
-
+        
 
 def add_entry():
     new_entry = [view.get_entry()]
-    cursor.executemany(
-        'INSERT INTO personnel VALUES (?, ?, ?, ?, ?, ?)', new_entry)
+    cursor.executemany('INSERT INTO personnel VALUES (?, ?, ?, ?, ?, ?)', new_entry)
     bd.commit()
-
 
 def delete_entry():
     id = view.get_deleted_id()
     cursor.execute(f'DELETE FROM personnel WHERE id = {id};')
     bd.commit()
 
-
 def find_by_surname():
-    surname = view.get_surname_to_find()
-    cursor.execute(f'SELECT * FROM personnel WHERE last_name LIKE "{surname}"')
+    cursor.execute('SELECT * FROM personnel WHERE last_name LIKE (?)', view.get_surname_to_find())
     one = cursor.fetchall()
     print(one)
+    
